@@ -1,2 +1,2 @@
 # build-box
-Open the box. Build something.
+A collection of small, interactive things I've built.
