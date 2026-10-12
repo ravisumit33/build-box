@@ -1,8 +1,9 @@
 # Build Box
 
 A collection of small browser apps, each with a C++ engine compiled to
-WebAssembly and a TypeScript frontend. GitHub Pages hosts the collection at
-`https://ravisumit33.github.io/build-box/`, with each app under its own path.
+WebAssembly and a TypeScript frontend.
+
+[Try here](https://ravisumit33.github.io/build-box/)
 
 ## Local development
 
