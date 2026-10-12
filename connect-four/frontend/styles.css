@@ -1,0 +1,174 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #e9edf5;
+  background: #111827;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 0.5rem;
+}
+
+p {
+  line-height: 1.5;
+}
+
+#status {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.player-name.red {
+  color: #ef4444;
+}
+
+.player-name.yellow {
+  color: #facc15;
+}
+
+.game {
+  --board-gap: 0.5rem;
+  --board-padding: 0.75rem;
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.columns,
+.board {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--board-gap);
+  padding: var(--board-padding);
+}
+
+.columns button {
+  display: grid;
+  gap: 0.125rem;
+  padding: 0.5rem 0;
+}
+
+.drop-label {
+  font-size: 0.75rem;
+}
+
+.board {
+  position: relative;
+  background: #2563eb;
+  border-radius: 0.75rem;
+}
+
+.board-columns {
+  position: absolute;
+  inset: var(--board-padding);
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--board-gap);
+}
+
+.board-column {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.board-column:hover:not(:disabled) {
+  background: transparent;
+}
+
+.board-column.highlighted:not(:disabled) {
+  background: #ffffff18;
+}
+
+.board-column:disabled {
+  background: transparent;
+  opacity: 1;
+}
+
+.winning-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.winning-lines line {
+  stroke: #fff;
+  stroke-width: 6;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 2px #111827);
+}
+
+.cell {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #111827;
+  box-shadow: inset 0 2px 4px #0005;
+}
+
+.cell.red {
+  background: #ef4444;
+}
+
+.cell.yellow {
+  background: #facc15;
+}
+
+.cell.preview {
+  opacity: 0.55;
+  outline: 2px dashed #fff;
+  outline-offset: -4px;
+}
+
+button {
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  background: #334155;
+  color: #fff;
+  border: 1px solid #64748b;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+button:hover:not(:disabled) {
+  background: #475569;
+}
+
+button:focus-visible {
+  outline: 3px solid #facc15;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+#error {
+  color: #fca5a5;
+}
+
+@media (max-width: 400px) {
+  main {
+    padding: 1rem;
+  }
+
+  .game {
+    --board-gap: 0.25rem;
+    --board-padding: 0.5rem;
+  }
+}

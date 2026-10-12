@@ -1,0 +1,14 @@
+{
+  "name": "build-box",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.13.0 || ^24.0.0 || >=26.0.0"
+  },
+  "scripts": {
+    "setup": "node scripts/collection.mjs setup",
+    "build": "node scripts/collection.mjs build",
+    "dev": "node scripts/collection.mjs dev",
+    "preview": "node scripts/collection.mjs preview"
+  }
+}

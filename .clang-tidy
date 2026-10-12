@@ -1,0 +1,90 @@
+Checks: >
+  clang-analyzer-*,
+  -clang-analyzer-alpha*
+  bugprone-*,
+  cert-*,
+  security-*,
+  modernize-*,
+  -modernize-use-trailing-return-type,
+  -modernize-use-nodiscard,
+  performance-*,
+  cppcoreguidelines-*,
+  readability-*,
+  misc-*
+
+WarningsAsErrors: "*"
+
+HeaderFilterRegex: ".*"
+
+ExcludeHeaderFilterRegex: ""
+
+FormatStyle: file
+
+ExtraArgs:
+  - -std=c++23
+
+CheckOptions:
+  # Classes / Structs
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+
+  # Enums
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumConstantCase
+    value: CamelCase
+
+  # Template parameters
+  - key: readability-identifier-naming.TypeTemplateParameterCase
+    value: CamelCase
+  - key: readability-identifier-naming.TemplateTemplateParameterCase
+    value: CamelCase
+  - key: readability-identifier-naming.ValueTemplateParameterCase
+    value: lower_case
+
+  # Functions
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.MethodCase
+    value: lower_case
+
+  # Variables
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+  - key: readability-identifier-naming.LocalVariableCase
+    value: lower_case
+
+  # Data members
+  - key: readability-identifier-naming.PrivateMemberCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: _
+
+  - key: readability-identifier-naming.ProtectedMemberCase
+    value: lower_case
+  - key: readability-identifier-naming.ProtectedMemberSuffix
+    value: _
+
+  # Global/static variables
+  - key: readability-identifier-naming.GlobalVariableCase
+    value: lower_case
+
+  # Constexpr variables (ordinary const variables use the rules above)
+  - key: readability-identifier-naming.ConstexprVariableCase
+    value: CamelCase
+  - key: readability-identifier-naming.ConstexprVariablePrefix
+    value: k
+
+  # Namespaces
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+
+  # Typedefs / aliases
+  - key: readability-identifier-naming.TypeAliasCase
+    value: CamelCase
+  - key: readability-identifier-naming.TypedefCase
+    value: CamelCase
