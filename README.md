@@ -3,7 +3,7 @@
 A collection of small browser apps, each with a C++ engine compiled to
 WebAssembly and a TypeScript frontend.
 
-[Try here](https://ravisumit33.github.io/build-box/)
+[Try here](https://build-box.pages.dev/)
 
 ## Local development
 
@@ -35,7 +35,7 @@ npm run preview
 The full build compiles every registered C++ engine, builds each frontend with
 its app-specific base URL, and assembles the landing page plus all apps in
 `site-dist/`. Preview serves that artifact at
-`http://127.0.0.1:4173/build-box/`
+`http://127.0.0.1:4173/`.
 
 Build just one app without replacing the collection artifact:
 
@@ -45,4 +45,5 @@ npm run build -- --app connect-four
 
 ## Apps
 
-- [Connect Four](https://ravisumit33.github.io/build-box/connect-four/) - A two-player game. Drop discs into a column and connect four to win.
+- [Connect Four](connect-four/) - Play a local C++ AI opponent or a friend.
+  Choose difficulty and side, then drop discs into a column and connect four.

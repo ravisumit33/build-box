@@ -11,7 +11,7 @@ struct CellPosition {
   Row row;
   Column column;
 
-  bool operator==(const CellPosition &) const = default;
+  friend bool operator==(const CellPosition &, const CellPosition &) = default;
 };
 
 using WinningLine = std::vector<CellPosition>;
@@ -31,7 +31,7 @@ public:
   bool check_win(Row row, Column col, DiscColor color) const;
 
   std::vector<WinningLine> get_winning_lines(Row row, Column col,
-                                           DiscColor color) const;
+                                             DiscColor color) const;
 
   bool is_full() const;
 

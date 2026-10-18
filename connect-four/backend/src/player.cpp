@@ -1,4 +1,8 @@
 #include "player.hpp"
+#include "utils.hpp"
+#include <functional>
+#include <optional>
+#include <string>
 #include <utility>
 
 Player::Player(std::string name, DiscColor color)

@@ -1,4 +1,8 @@
 #include "game.hpp"
+#include "board.hpp"
+#include "player.hpp"
+#include <optional>
+#include <vector>
 
 Game::Game(const PlayerRegistry &player_registry, PlayerId player1,
            PlayerId player2)
@@ -23,7 +27,7 @@ bool Game::make_move(PlayerId player_id, Column column) {
     return false;
   }
 
-  Row row = *optional_row;
+  Row const row = *optional_row;
   winning_lines_ = board_.get_winning_lines(row, column, player->get_color());
   if (!winning_lines_.empty()) {
     state_ = GameState::Won;

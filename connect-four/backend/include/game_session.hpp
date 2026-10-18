@@ -1,6 +1,8 @@
 #pragma once
 
+#include "ai_controller.hpp"
 #include "game.hpp"
+#include <functional>
 #include <optional>
 #include <vector>
 
@@ -28,8 +30,13 @@ public:
 
   void reset();
 
+  void start_computer_search(Difficulty difficulty, int request_id,
+                             std::function<void(ComputerSearch)> complete);
+  void cancel_computer_search();
+
 private:
   // Game retains a reference to this registry, so member order matters.
   PlayerRegistry player_registry_;
   Game game_;
+  AiController computer_;
 };

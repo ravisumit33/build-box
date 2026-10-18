@@ -1,6 +1,9 @@
 #include "board.hpp"
+#include "utils.hpp"
 #include <array>
+#include <optional>
 #include <utility>
+#include <vector>
 
 Board::Board()
     : rows_(kRows), cols_(kCols),
@@ -35,19 +38,19 @@ bool Board::check_win(Row row, Column col, DiscColor color) const {
 }
 
 std::vector<WinningLine> Board::get_winning_lines(Row row, Column col,
-                                               DiscColor color) const {
+                                                  DiscColor color) const {
   if (get_cell(row, col) != color) {
     return {};
   }
 
-  constexpr std::array<std::pair<int, int>, 4> directions{
+  constexpr std::array<std::pair<int, int>, 4> kDirections{
       {{1, 1}, {1, 0}, {1, -1}, {0, 1}}};
   std::vector<WinningLine> winning_lines;
-  for (const auto &[row_step, column_step] : directions) {
+  for (const auto &[row_step, column_step] : kDirections) {
     int first_row = std::to_underlying(row);
     int first_column = std::to_underlying(col);
     while (get_cell(Row{first_row - row_step},
-                   Column{first_column - column_step}) == color) {
+                    Column{first_column - column_step}) == color) {
       first_row -= row_step;
       first_column -= column_step;
     }
@@ -56,7 +59,8 @@ std::vector<WinningLine> Board::get_winning_lines(Row row, Column col,
     for (int current_row = first_row, current_column = first_column;
          get_cell(Row{current_row}, Column{current_column}) == color;
          current_row += row_step, current_column += column_step) {
-      line.push_back({Row{current_row}, Column{current_column}});
+      line.push_back(
+          {.row = Row{current_row}, .column = Column{current_column}});
     }
 
     if (line.size() >= 4) {

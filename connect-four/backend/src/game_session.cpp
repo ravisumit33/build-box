@@ -1,4 +1,13 @@
 #include "game_session.hpp"
+#include "ai.hpp"
+#include "ai_controller.hpp"
+#include "board.hpp"
+#include "game.hpp"
+#include "player.hpp"
+#include "utils.hpp"
+#include <functional>
+#include <stdexcept>
+#include <utility>
 
 namespace {
 constexpr PlayerId kPlayer1Id{1};
@@ -17,7 +26,12 @@ GameSession::GameSession()
       game_(player_registry_, kPlayer1Id, kPlayer2Id) {}
 
 bool GameSession::make_move(int column) {
-  return game_.make_move(game_.get_current_player_id(), Column{column});
+  const bool moved =
+      game_.make_move(game_.get_current_player_id(), Column{column});
+  if (moved) {
+    computer_.cancel();
+  }
+  return moved;
 }
 
 GameSnapshot GameSession::get_snapshot() const {
@@ -41,5 +55,21 @@ GameSnapshot GameSession::get_snapshot() const {
 }
 
 void GameSession::reset() {
+  computer_.cancel();
   game_ = Game{player_registry_, kPlayer1Id, kPlayer2Id};
 }
+
+void GameSession::start_computer_search(
+    Difficulty difficulty, int request_id,
+    std::function<void(ComputerSearch)> complete) {
+  if (game_.get_game_state() != GameState::InProgress) {
+    throw std::logic_error("Cannot search a finished game");
+  }
+  const auto color = game_.get_current_player_id() == kPlayer1Id
+                         ? DiscColor::Red
+                         : DiscColor::Yellow;
+  computer_.start(game_.get_board(), color, difficulty, request_id,
+                  std::move(complete));
+}
+
+void GameSession::cancel_computer_search() { computer_.cancel(); }

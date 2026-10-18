@@ -8,6 +8,7 @@
   "scripts": {
     "setup": "node scripts/collection.mjs setup",
     "build": "node scripts/collection.mjs build",
+    "lint:cpp": "node scripts/collection.mjs lint:cpp",
     "dev": "node scripts/collection.mjs dev",
     "preview": "node scripts/collection.mjs preview"
   }

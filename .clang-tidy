@@ -1,9 +1,8 @@
 Checks: >
   clang-analyzer-*,
-  -clang-analyzer-alpha*
   bugprone-*,
   cert-*,
-  security-*,
+  clang-analyzer-security.*,
   modernize-*,
   -modernize-use-trailing-return-type,
   -modernize-use-nodiscard,
