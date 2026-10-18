@@ -3,7 +3,7 @@
 A collection of small browser apps, each with a C++ engine compiled to
 WebAssembly and a TypeScript frontend.
 
-[Try here](https://build-box.pages.dev/)
+[Try here](https://build-box.ravi-sumit33.workers.dev/)
 
 ## Local development
 

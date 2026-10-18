@@ -69,6 +69,7 @@ Testing/
 
 # Collection tooling and generated site
 /.tools/
+/.wrangler/
 /site-dist/
 node_modules/
 frontend/generated/
