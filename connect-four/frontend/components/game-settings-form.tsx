@@ -3,6 +3,7 @@ import type { GameSettings } from "../use-game";
 interface GameSettingsFormProps {
   settings: GameSettings;
   disabled: boolean;
+  hasChanges: boolean;
   onChange: (settings: GameSettings) => void;
   onApply: () => void;
 }
@@ -10,6 +11,7 @@ interface GameSettingsFormProps {
 export function GameSettingsForm({
   settings,
   disabled,
+  hasChanges,
   onChange,
   onApply,
 }: GameSettingsFormProps) {
@@ -65,7 +67,12 @@ export function GameSettingsForm({
           </label>
         </>
       )}
-      <button className="apply-settings" type="button" onClick={onApply}>
+      <button
+        className="apply-settings"
+        type="button"
+        disabled={!hasChanges}
+        onClick={onApply}
+      >
         Apply &amp; start new game
       </button>
     </fieldset>

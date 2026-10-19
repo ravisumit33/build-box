@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="168" height="144" viewBox="0 0 168 144">
+  <defs>
+    <pattern id="holes" width="24" height="21" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="10.5" r="7.5" fill="#111827"/>
+    </pattern>
+  </defs>
+  <g transform="translate(0 18)">
+    <rect width="168" height="126" rx="9" fill="#2563eb"/>
+    <rect width="168" height="126" fill="url(#holes)"/>
+    <g fill="#ef4444">
+      <circle cx="12" cy="115.5" r="7.5"/>
+      <circle cx="36" cy="115.5" r="7.5"/>
+      <circle cx="60" cy="115.5" r="7.5"/>
+      <circle cx="84" cy="115.5" r="7.5"/>
+    </g>
+    <g fill="#facc15">
+      <circle cx="156" cy="115.5" r="7.5"/>
+      <circle cx="156" cy="94.5" r="7.5"/>
+      <circle cx="132" cy="115.5" r="7.5"/>
+    </g>
+    <path d="M12 115.5h72" fill="none" stroke="#e9edf5" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -20,7 +20,7 @@ constexpr std::array<int, 7> kMoveOrder{3, 2, 4, 1, 5, 0, 6};
 constexpr std::array<int, 5> kWeights{0, 1, 10, 100, kWin};
 constexpr std::array<std::pair<int, int>, 4> kDirections{
     {{0, 1}, {1, 0}, {1, 1}, {1, -1}}};
-constexpr SearchLimits kEasyLimits{.max_depth = 1,
+constexpr SearchLimits kEasyLimits{.max_depth = 2,
                                    .budget = std::chrono::milliseconds{50}};
 constexpr SearchLimits kMediumLimits{.max_depth = 3,
                                      .budget = std::chrono::milliseconds{200}};

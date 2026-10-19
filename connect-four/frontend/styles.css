@@ -16,8 +16,66 @@ main {
   text-align: center;
 }
 
-h1 {
-  margin-bottom: 0.5rem;
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.game-header h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+.game-icon {
+  display: block;
+  width: 56px;
+  height: 48px;
+  margin: 0.75rem auto 0;
+}
+
+.game-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.settings-trigger,
+.settings-close {
+  flex-shrink: 0;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.settings-panel {
+  position: fixed;
+  inset: 5rem max(1.5rem, calc((100vw - 40rem) / 2)) auto auto;
+  width: 20rem;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100dvh - 6rem);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border: 1px solid #64748b;
+  border-radius: 0.75rem;
+  background: #111827;
+  color: inherit;
+  box-shadow: 0 1rem 3rem #0006;
+}
+
+.settings-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.settings-panel-header h2 {
+  margin: 0;
+  font-size: 1.125rem;
 }
 
 p {
@@ -29,14 +87,49 @@ p {
   font-weight: 600;
 }
 
-.settings {
+#game-feedback {
+  position: fixed;
+  top: calc(1rem + env(safe-area-inset-top));
+  left: 1rem;
+  right: 1rem;
+  z-index: 2;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  align-items: flex-end;
-  gap: 0.75rem;
-  border: 1px solid #64748b;
+  pointer-events: none;
+}
+
+.game-notice {
+  padding: 0.75rem 1rem;
+  border: 1px solid #4ade80;
   border-radius: 0.5rem;
+  background: #14532d;
+  color: #f0fdf4;
+  box-shadow: 0 4px 12px #0005;
+  animation: game-started 180ms ease-out;
+}
+
+@keyframes game-started {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-notice {
+    animation: none;
+  }
+}
+
+.settings {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 .settings label {
@@ -46,6 +139,10 @@ p {
 }
 
 select {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  box-sizing: border-box;
   font: inherit;
   color: inherit;
   background: #334155;
@@ -209,6 +306,22 @@ button:disabled {
 
 #error {
   color: #fca5a5;
+}
+
+@media (max-width: 600px) {
+  .settings-panel {
+    inset: auto 0 0;
+    width: 100%;
+    max-width: none;
+    max-height: calc(100dvh - 1rem);
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+    border-radius: 1rem 1rem 0 0;
+    border-bottom: 0;
+  }
+
+  .settings-panel::backdrop {
+    background: #0006;
+  }
 }
 
 @media (max-width: 400px) {

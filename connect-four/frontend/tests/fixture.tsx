@@ -11,17 +11,29 @@ if (!element) {
 }
 const root = createRoot(element);
 const mode = new URLSearchParams(location.search).get("mode");
+let searchRequests = 0;
 const loadClient = async (): Promise<GameClientApi> => {
   const client = await createGameClient();
   return {
     makeMove: (column) => client.makeMove(column),
     getSnapshot: () => client.getSnapshot(),
-    reset: () => client.reset(),
+    reset: () => {
+      if (mode === "reset-error") {
+        throw new Error("Injected reset failure");
+      }
+      client.reset();
+    },
     cancelComputerMove: () => client.cancelComputerMove(),
     dispose: () => client.dispose(),
     requestComputerMove: (difficulty) => {
       if (mode === "search-error") {
         return Promise.reject(new Error("Injected search failure"));
+      }
+      if (mode === "instant-search" || mode === "slow-search") {
+        document.documentElement.dataset.computerSearches = String(++searchRequests);
+        return mode === "instant-search"
+          ? Promise.resolve(3)
+          : new Promise<number>((resolve) => window.setTimeout(() => resolve(3), 800));
       }
       return client.requestComputerMove(difficulty);
     },

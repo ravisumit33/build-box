@@ -12,7 +12,7 @@ namespace {
 constexpr int kThreatColumn = 6;
 constexpr int kPartialSearchChecks = 50;
 constexpr int kCancellationChecks = 20;
-constexpr int kEasyDepth = 1;
+constexpr int kEasyDepth = 2;
 constexpr int kMediumDepth = 3;
 constexpr int kHardDepth = 8;
 constexpr int kEasyTrapPlies = 3;
@@ -92,7 +92,8 @@ bool opponent_can_force_win(Board board, DiscColor color,
 void test_difficulty_planning() {
   const auto clock = [] { return std::chrono::steady_clock::time_point{}; };
   for (const auto color : {DiscColor::Red, DiscColor::Yellow}) {
-    const auto short_setup = position_from_moves("33332", opponent(color));
+    const auto short_setup =
+        position_from_moves("33124532214421223433445", opponent(color));
     const auto easy = choose_move(
         short_setup, color, limits_for(Difficulty::Easy), [] { return false; },
         clock);
@@ -100,13 +101,13 @@ void test_difficulty_planning() {
         short_setup, color, limits_for(Difficulty::Medium),
         [] { return false; }, clock);
     require(
-        easy.completed_depth == kEasyDepth && easy.nodes == 0 &&
+        easy.completed_depth == kEasyDepth && easy.nodes > 0 &&
             opponent_can_force_win<kEasyTrapPlies>(short_setup, color, easy),
-        "Easy can overlook a simple two-move human setup");
+        "Easy can still overlook a two-move human combination");
     require(
         medium.completed_depth == kMediumDepth &&
             !opponent_can_force_win<kEasyTrapPlies>(short_setup, color, medium),
-        "Medium anticipates the simple setup that beats Easy");
+        "Medium anticipates a two-move combination that beats Easy");
 
     const auto long_setup =
         position_from_moves("312224101122115554344425", color);
@@ -163,10 +164,21 @@ bool human_can_win_easy(std::string_view columns, DiscColor human) {
 
 void test_easy_is_winnable() {
   require(
-      human_can_win_easy("33241", DiscColor::Red),
-      "An attentive first player can beat Easy with a simple opening setup");
-  require(human_can_win_easy("23323464255", DiscColor::Yellow),
+      human_can_win_easy("32334454222", DiscColor::Red),
+      "An attentive first player can still beat Easy with planned moves");
+  require(human_can_win_easy("3322055255444001", DiscColor::Yellow),
           "Easy is also winnable when the computer starts");
+}
+
+void test_easy_defends_simple_openings() {
+  for (const auto color : {DiscColor::Red, DiscColor::Yellow}) {
+    for (const auto *const moves :
+         {"3210", "3456", "0123", "6543", "0000", "6666"}) {
+      require(!human_can_win_easy(moves, color),
+              std::string{"Easy must stop a basic four-disc opening: "} +
+                  moves);
+    }
+  }
 }
 
 void test_tactics() {
@@ -285,6 +297,7 @@ void test_difficulty_limits() {
 
 int main() {
   try {
+    test_easy_defends_simple_openings();
     test_tactics();
     test_difficulty_planning();
     test_easy_is_winnable();

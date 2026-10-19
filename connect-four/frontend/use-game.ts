@@ -8,6 +8,8 @@ import type {
 
 type Phase = "loading" | "ready" | "unavailable" | "failed";
 
+const minimumComputerTurnMs = 400;
+
 export interface GameSettings {
   mode: "computer" | "two_players";
   difficulty: Difficulty;
@@ -25,6 +27,7 @@ export function useGame(loadClient: () => Promise<GameClientApi>) {
   const [snapshot, setSnapshot] = useState<GameSnapshot | null>(null);
   const [phase, setPhase] = useState<Phase>("loading");
   const [errorMessage, setErrorMessage] = useState("");
+  const [restartNoticeId, setRestartNoticeId] = useState<number | null>(null);
   const [hoveredColumn, setHoveredColumn] = useState<number | null>(null);
   const [focusedColumn, setFocusedColumn] = useState<number | null>(null);
   const [settings, setSettings] = useState<GameSettings>(initialSettings);
@@ -98,6 +101,14 @@ export function useGame(loadClient: () => Promise<GameClientApi>) {
   }, [loadClient]);
 
   useEffect(() => {
+    if (restartNoticeId === null) {
+      return;
+    }
+    const timeout = window.setTimeout(() => setRestartNoticeId(null), 3000);
+    return () => window.clearTimeout(timeout);
+  }, [restartNoticeId]);
+
+  useEffect(() => {
     const client = clientRef.current;
     if (!client || !computerTurn || !snapshot) {
       return;
@@ -105,11 +116,20 @@ export function useGame(loadClient: () => Promise<GameClientApi>) {
     let cancelled = false;
     const generation = generationRef.current;
     const expectedPlayer = snapshot.currentPlayerId;
+    let cancelTurnDelay: (() => void) | undefined;
+    const minimumTurn = new Promise<void>((resolve) => {
+      const timeout = window.setTimeout(resolve, minimumComputerTurnMs);
+      cancelTurnDelay = () => {
+        window.clearTimeout(timeout);
+        resolve();
+      };
+    });
     async function move(client: GameClientApi) {
       try {
-        const column = await client.requestComputerMove(
-          activeSettings.difficulty,
-        );
+        const [column] = await Promise.all([
+          client.requestComputerMove(activeSettings.difficulty),
+          minimumTurn,
+        ]);
         if (
           cancelled ||
           generation !== generationRef.current ||
@@ -142,6 +162,7 @@ export function useGame(loadClient: () => Promise<GameClientApi>) {
     void move(client);
     return () => {
       cancelled = true;
+      cancelTurnDelay?.();
       client.cancelComputerMove();
     };
   }, [computerTurn, snapshot, activeSettings]);
@@ -199,8 +220,10 @@ export function useGame(loadClient: () => Promise<GameClientApi>) {
       setActiveSettings({ ...settings });
       setSnapshot(client.getSnapshot());
       setPhase("ready");
+      setRestartNoticeId(generationRef.current);
     } catch (error) {
       console.error("Could not start a new game", error);
+      setRestartNoticeId(null);
       setErrorMessage(
         "Could not start a new game. Reload the page to try again.",
       );
@@ -212,6 +235,7 @@ export function useGame(loadClient: () => Promise<GameClientApi>) {
     snapshot,
     phase,
     errorMessage,
+    restartNoticeId,
     settings,
     activeSettings,
     computerTurn,
